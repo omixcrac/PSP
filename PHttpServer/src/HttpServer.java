@@ -7,10 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-//VERSIÓN MONOHILO
 
-public class HttpServer{
-
+public class HttpServer 
+{
 	private static final String newLine = "\r\n";
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -22,7 +21,7 @@ public class HttpServer{
 		ServerSocket serverSocket = new ServerSocket (port);
 		
 		while (true) {
-			//Que el servidor se quede escuchando
+			
 			Socket socket = serverSocket.accept();
 			
 			String fileName = getFileName(socket.getInputStream());
@@ -38,13 +37,38 @@ public class HttpServer{
 			Scanner scanner = new Scanner (inputStream);
 			
 			String fileName = "index.html";
+			//String fileName = " ";
+			
 			
 			//Linea GET
 			while(true){
 				String line = scanner.nextLine();
 				System.out.println(line);
-				if (line.equals(""))
+				if (line.contains("GET")){ //GET /index.html HTTP 1/1
+					fileName=line.split(" ")[1].substring(1); //Se obtiene index.html
+					
+					
+					
+					//String
+					//int index = 5;
+					//while(line.charAt[index] != ' ')
+					 	//fileName += line.charAt(index++);
+					
+					
+					
+					//Pattern pattern = Pattern.compile("GET /(?<filename>.*) HTTP/1.[01"];
+					// Matcher marcher = pattern.matcher(line);
+					// filename = matcher.group(1); //from 1.7 -> marcher. group("filename");
+					 
+					fileName = line.substring(5, line.indexOf(" ", 5));
+					 
+					
+					System.out.println("fileName=" + fileName);
+				}
+				if (line.equals("")){
 					break;
+				}
+					
 			}
 			return fileName;		
 		}
@@ -66,8 +90,6 @@ public class HttpServer{
 			File file = new File(fileName);
 			String responseFileName = file.exists() ? fileName : fileNameError404;
 			
-			//Hace falta una linea en blanco, ya que lo dice el protocolo HTTP
-
 			final int bufferSize = 2048;
 			byte[] buffer = new byte[bufferSize];
 			
@@ -84,6 +106,3 @@ public class HttpServer{
 			fileInputStream.close();
 		}
 }
-	
-
-
