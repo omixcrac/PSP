@@ -13,11 +13,8 @@ public class HttpServer
 	private static final String newLine = "\r\n";
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
-		
 		//final String newLine = "\r\n";
 		final int port = 8080;
-		
-
 		ServerSocket serverSocket = new ServerSocket (port);
 		
 		while (true) {
@@ -35,9 +32,9 @@ public class HttpServer
 	
 		private static String getFileName(InputStream inputStream){
 			Scanner scanner = new Scanner (inputStream);
-			
-			String fileName = "index.html";
-			//String fileName = " ";
+			//String fileName = "index.html";
+			String fileName = " ";
+			final String defaultFileName = "index.html";
 			
 			
 			//Linea GET
@@ -47,30 +44,27 @@ public class HttpServer
 				if (line.contains("GET")){ //GET /index.html HTTP 1/1
 					fileName=line.split(" ")[1].substring(1); //Se obtiene index.html
 					
-					
-					
 					//String
 					//int index = 5;
 					//while(line.charAt[index] != ' ')
-					 	//fileName += line.charAt(index++);
-					
-					
-					
+					//fileName += line.charAt(index++);
 					//Pattern pattern = Pattern.compile("GET /(?<filename>.*) HTTP/1.[01"];
 					// Matcher marcher = pattern.matcher(line);
 					// filename = matcher.group(1); //from 1.7 -> marcher. group("filename");
 					 
 					fileName = line.substring(5, line.indexOf(" ", 5));
-					 
-					
-					System.out.println("fileName=" + fileName);
+		
 				}
 				if (line.equals("")){
 					break;
 				}
 					
 			}
-			return fileName;		
+			//return fileName.equals("") ? fileName : defaultFileName;	
+			if (fileName.equals(""))
+				fileName = defaultFileName;
+			System.out.println("fileName=" + fileName);
+			return fileName;
 		}
 		
 		private static void writeHeader(OutputStream outputStream, String fileName) throws IOException{
